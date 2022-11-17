@@ -1,4 +1,4 @@
-module template-go-vercel
+module github.com/jeheskielSunloy77/test-go-template
 
 go 1.17
 
