@@ -1,4 +1,4 @@
-module github.com/jeheskielSunloy77/test-go-template
+module github.com/jeheskielSunloy77/go-ecommerce-scraper
 
 go 1.17
 
