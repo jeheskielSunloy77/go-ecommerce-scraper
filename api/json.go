@@ -23,7 +23,18 @@ func Json(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("q")
 	splitedQuery := strings.Split(query, " ")
 	searchQuery := strings.Join(splitedQuery, "+")
+	products := scraper(searchQuery)
+	json.NewEncoder(w).Encode(products)
+}
 
+func scraper(searchQuery string) []Product {
+	amazonProducts := amazonScraper(searchQuery)
+	ebayProducts := ebayScraper(searchQuery)
+	products := append(amazonProducts, ebayProducts...)
+	return products
+}
+
+func amazonScraper(searchQuery string) []Product {
 	c := colly.NewCollector()
 	url := "https://www.amazon.com/s?k=" + searchQuery
 	products := []Product{}
@@ -59,5 +70,41 @@ func Json(w http.ResponseWriter, r *http.Request) {
 
 	c.Wait()
 
-	json.NewEncoder(w).Encode(products)
+	return products
+}
+
+func ebayScraper(searchQuery string) []Product {
+	c := colly.NewCollector()
+	url := "https://www.ebay.com/sch/i.html?LH_ItemCondition=1000&_nkw=" + searchQuery
+	products := []Product{}
+
+	c.OnHTML("ul.srp-results.srp-list.clearfix li.s-item.s-item__pl-on-bottom", func(e *colly.HTMLElement) {
+		product := Product{
+			Name:       e.ChildText("div.s-item__title span"),
+			Price:      e.ChildText("span.s-item__price"),
+			ImageUrl:   e.ChildAttr("div.s-item__image-wrapper img", "src"),
+			ProductUrl: e.ChildAttr("a.s-item__link", "href"),
+			Vendor:     "Ebay",
+		}
+
+		products = append(products, product)
+	})
+	// c.OnHTML("a.pagination__next.icon-link", func(e *colly.HTMLElement) {
+	// 	nextPage := e.Request.AbsoluteURL(e.Attr("href"))
+	// 	c.Visit(nextPage)
+	// })
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println(r.URL.String())
+	})
+	c.OnError(func(_ *colly.Response, err error) {
+		fmt.Println("Something went wrong:", err)
+	})
+
+	if err := c.Visit(url); err != nil {
+		fmt.Println("Error on start of crawl: ", err)
+	}
+
+	c.Wait()
+
+	return products
 }
