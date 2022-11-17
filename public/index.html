@@ -1,101 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <title>go-ecommerce-scraper</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-
-<body class="bg-white dark:bg-gray-900">
-  <main class="container mx-auto m-8 min-h-[86vh]">
-    <section class="flex justify-between items-center">
-      <h1 class="text-2xl text-black dark:text-white">Ecommerce Scraper With
-        <span class="text-[#007D9C] font-bold">GO!</span>
-      </h1>
-      <div class="min-w-[70%]">
-        <label for="default-search"
-          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-          </div>
-          <input type="search" id="default-search"
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search for any product online!" required>
-          <button onclick="search()"
-            class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-        </div>
-      </div>
-    </section>
-    <div class="h-[1px] bg-gray-200 my-4"></div>
-    <section id="searchResult">
-      <div id="searchResultGrid" class="grid grid-cols-3 gap-y-4 gap-x-8"></div>
-    </section>
-  </main>
-  <footer class='flex items-center justify-center mb-8'>
-    <div class='py-2 text-gray-800 dark:text-white sm:py-0 flex items-center'>
-      Build with
-      <svg class="mx-1" width='18px' height='18px' xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 864 864"
-        fill="#DC1419"
-        style="enable-background:new 0 0 864 864;" xml:space="preserve">
-       
-        <path class="st0"
-          d="M766.1,257.5c-8.2-8.5-24.7-1.8-37.8-3c-0.3,0-0.9,0-1.2,0c-7.9,0.9-11.6-1.8-11.3-10.4  c0.6-10.7-0.3-21.6,0.3-32.3c0.3-7.3-2.4-9.5-9.5-9.1c-11.3,0.3-22.6-0.3-33.8,0.3c-6.4,0.3-8.8-2.1-8.5-8.5  c0.3-11.3,0-22.6,0.3-33.8c0.3-6.7-2.1-9.5-9.1-9.5c-46,0.3-92.1,0.3-137.8,0c-7.6,0-9.1,3-8.8,9.8c0.3,11.3,0,22.6,0.3,33.8  c0.3,6.4-1.8,8.8-8.5,8.5c-9.8-0.3-19.8,0.3-29.9-0.3s-14.9,1.8-14,13.1c0.9,9.8,0,19.8,0.3,29.9c0.3,6.7-1.8,9.8-9.1,9.5  c-10.7-0.6-21.6-0.6-32.3,0c-7.6,0.3-10.7-2.1-10.1-9.8c0.6-10.7,0-21.6,0.3-32.3c0.3-7.6-2.4-10.4-10.1-10.1  c-11.3,0.6-22.6-0.3-33.8,0c-6.4,0.3-8.8-2.1-8.8-8.5c0.3-11.6,0-23.5,0.3-35.1c0-5.5-1.8-8.2-7.6-7.9c-46.3,0-93,0.3-139.3,0  c-6.4,0-8.8,2.1-8.5,8.5c0.3,10.7-0.3,21.6,0.3,32.3c0.3,7.9-1.8,11.6-10.4,11c-9.5-0.6-18.9,0.6-28.4-0.3  c-9.8-0.9-14,1.5-13.1,12.2c0.9,9.5-0.3,18.9,0.3,28.4c0.6,8.5-1.5,12.5-11,11.9c-9.5-0.9-18.9,0.3-28.4-0.3  c-9.8-0.6-13.4,2.4-13.1,12.8c0.6,30.2,0.3,60.4,0.3,90.6l0,0c0,24.4,0,48.8,0,72.9c0,31.1,0,31.1,31.7,31.1  c20.4,0,20.4,0,20.1,20.7c0,31.1,0,31.1,30.2,31.1c3.7,0,7.3,0.3,10.7,0c8.5-0.9,10.7,2.7,10.7,11c0,13.4-6.1,32,2.7,38.4  c9.1,6.7,26.8,2.7,40.9,1.8c6.7-0.6,7.9,1.5,7.9,6.7c0,9.1,0,18,0,27.1c0,18.9,0,18.9,18.3,18.9c33.8,0,33.8,0,33.5,34.2  c-0.3,18-3,18,16.8,18c34.8,0,35.4,0.3,34.8,35.1c-0.3,13.4,3,18.3,17.1,17.1c11.6-1.2,27.1-5.2,33.8,2.1c5.8,6.1,2.7,21.6,1.5,32.6  c-1.5,13.7,2.7,18.6,16.8,16.8c11-1.5,25.9,3.4,32.6-2.1c7.9-6.7,3-22,2.4-33.5c-0.6-12.8,2.7-17.7,16.5-16.5  c11,1.2,25.6,4,32.6-1.5c8.5-6.7,3.4-22,2.7-33.2c-0.6-13.4,3.4-18,17.1-17.1c11,0.9,25.3,5.2,32.6-1.8c7.3-7,2.1-21.3,2.4-32.3  c0.6-17.7,0.3-17.7,18.6-17.4c5.5,0,11-0.6,16.2,0.3c13.1,1.8,18-2.4,17.4-16.8c-1.5-35.4-0.6-36,35.4-35.1  c13.1,0.3,18.3-2.4,16.8-16.8c-1.2-11-5.2-25.3,1.8-32.6c7-7.6,21.3-1.5,32.3-2.4c1.2,0,2.7-0.3,4,0c11.3,2.1,13.4-3.4,13.1-13.4  c-0.3-12.2-5.2-27.4,1.8-35.4c7.9-8.5,23.8-2.7,36-2.7c11,0,14.6-2.7,14.3-14c-0.6-51.5,0-102.8-0.3-154.3  C768.2,281.6,773.4,265.4,766.1,257.5z M301.1,297.4c0.3,7-2.7,9.5-9.5,9.1c-9.8-0.3-19.8,0.3-29.9-0.3c-9.8-0.6-13.7,2.4-13.1,12.8  c0.9,11.3,0.3,22.6,0.3,33.8c0,10.7,0,21.6,0,32.3l0,0c0,22.6-0.3,45.1,0,67.7c0,7-1.8,9.8-9.1,9.1c-11.3-0.6-22.6-0.6-33.8,0  c-7.6,0.3-8.8-2.7-8.8-9.5c0.3-45.4,0.3-91.2,0-136.6c0-7.9,2.4-10.7,10.1-10.1c8.5,0.6,17.1,0,25.6,1.5c11.6,2.1,15.9-3,16.2-13.1  c0.3-10.4,0.3-20.7,0-31.1c-0.3-6.7,2.1-9.1,8.5-8.5c0.9,0,1.8,0,2.7,0C312.7,256.3,299.2,243.8,301.1,297.4z" />
-      </svg>
-      with
-      <svg class="mx-1" width='28px' height='28px' xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 205.4 76.7"
-        style="enable-background:new 0 0 205.4 76.7;" xml:space="preserve"
-        fill="#00ACD7"
-        >
-        <g>
-          <g>
-            <g>
-              <g>
-                <path class="st0"
-                  d="M15.5,23.2c-0.4,0-0.5-0.2-0.3-0.5l2.1-2.7c0.2-0.3,0.7-0.5,1.1-0.5h35.7c0.4,0,0.5,0.3,0.3,0.6l-1.7,2.6      c-0.2,0.3-0.7,0.6-1,0.6L15.5,23.2z" />
-              </g>
-            </g>
-          </g>
-          <g>
-            <g>
-              <g>
-                <path class="st0"
-                  d="M0.4,32.4c-0.4,0-0.5-0.2-0.3-0.5l2.1-2.7c0.2-0.3,0.7-0.5,1.1-0.5h45.6c0.4,0,0.6,0.3,0.5,0.6l-0.8,2.4      c-0.1,0.4-0.5,0.6-0.9,0.6L0.4,32.4z" />
-              </g>
-            </g>
-          </g>
-          <g>
-            <g>
-              <g>
-                <path class="st0"
-                  d="M24.6,41.6c-0.4,0-0.5-0.3-0.3-0.6l1.4-2.5c0.2-0.3,0.6-0.6,1-0.6h20c0.4,0,0.6,0.3,0.6,0.7L47.1,41      c0,0.4-0.4,0.7-0.7,0.7L24.6,41.6z" />
-              </g>
-            </g>
-          </g>
-          <g>
-            <g id="CXHf1q_3_">
-              <g>
-                <g>
-                  <path class="st0"
-                    d="M128.4,21.4c-6.3,1.6-10.6,2.8-16.8,4.4c-1.5,0.4-1.6,0.5-2.9-1c-1.5-1.7-2.6-2.8-4.7-3.8       c-6.3-3.1-12.4-2.2-18.1,1.5c-6.8,4.4-10.3,10.9-10.2,19c0.1,8,5.6,14.6,13.5,15.7c6.8,0.9,12.5-1.5,17-6.6       c0.9-1.1,1.7-2.3,2.7-3.7c-3.6,0-8.1,0-19.3,0c-2.1,0-2.6-1.3-1.9-3c1.3-3.1,3.7-8.3,5.1-10.9c0.3-0.6,1-1.6,2.5-1.6       c5.1,0,23.9,0,36.4,0c-0.2,2.7-0.2,5.4-0.6,8.1c-1.1,7.2-3.8,13.8-8.2,19.6c-7.2,9.5-16.6,15.4-28.5,17       c-9.8,1.3-18.9-0.6-26.9-6.6c-7.4-5.6-11.6-13-12.7-22.2c-1.3-10.9,1.9-20.7,8.5-29.3c7.1-9.3,16.5-15.2,28-17.3       c9.4-1.7,18.4-0.6,26.5,4.9c5.3,3.5,9.1,8.3,11.6,14.1C130,20.6,129.6,21.1,128.4,21.4z" />
-                </g>
-                <g>
-                  <path class="st0"
-                    d="M161.5,76.7c-9.1-0.2-17.4-2.8-24.4-8.8c-5.9-5.1-9.6-11.6-10.8-19.3c-1.8-11.3,1.3-21.3,8.1-30.2       c7.3-9.6,16.1-14.6,28-16.7c10.2-1.8,19.8-0.8,28.5,5.1c7.9,5.4,12.8,12.7,14.1,22.3c1.7,13.5-2.2,24.5-11.5,33.9       c-6.6,6.7-14.7,10.9-24,12.8C166.8,76.3,164.1,76.4,161.5,76.7z M185.3,36.3c-0.1-1.3-0.1-2.3-0.3-3.3       c-1.8-9.9-10.9-15.5-20.4-13.3c-9.3,2.1-15.3,8-17.5,17.4c-1.8,7.8,2,15.7,9.2,18.9c5.5,2.4,11,2.1,16.3-0.6       C180.5,51.3,184.8,44.9,185.3,36.3z" />
-                </g>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-  </footer>
-</body>
-<script src="app.js"></script>
-
+	<head>
+		<title>go-ecommerce-scraper</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+			}
+		</script>
+		<script>
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			if (
+				localStorage.getItem('color-theme') === 'dark' ||
+				(!('color-theme' in localStorage) &&
+					window.matchMedia('(prefers-color-scheme: dark)').matches)
+			) {
+				document.documentElement.classList.add('dark')
+			} else {
+				document.documentElement.classList.remove('dark')
+			}
+		</script>
+	</head>
+	<body class="bg-white dark:bg-gray-900 items">
+		<main class="container mx-auto m-8 min-h-[86vh]">
+			<section class="flex justify-between items-center">
+				<h1 class="text-2xl text-black dark:text-white">
+					Ecommerce Scraper With
+					<span class="text-[#007D9C] font-bold">GO!</span>
+				</h1>
+				<div class="min-w-[70%]">
+					<label
+						for="default-search"
+						class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+						>Search</label
+					>
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+						>
+							<svg
+								aria-hidden="true"
+								class="w-5 h-5 text-gray-500 dark:text-gray-400"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								></path>
+							</svg>
+						</div>
+						<input
+							type="search"
+							id="default-search"
+							class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							placeholder="Search for any product online!"
+							required
+						/>
+						<button
+							onclick="search()"
+							class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+						>
+							Search
+						</button>
+					</div>
+				</div>
+				<button
+					id="theme-toggle"
+					type="button"
+					class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+				>
+					<svg
+						id="theme-toggle-dark-icon"
+						class="hidden w-5 h-5"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+						></path>
+					</svg>
+					<svg
+						id="theme-toggle-light-icon"
+						class="hidden w-5 h-5"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+						></path>
+					</svg>
+				</button>
+			</section>
+			<div class="h-[1px] bg-gray-200 dark:bg-gray-700 my-4"></div>
+			<section id="searchResult">
+				<div id="searchResultGrid" class="grid grid-cols-3 gap-8"></div>
+			</section>
+		</main>
+		<footer class="flex items-center justify-center mb-8">
+			<div class="py-2 text-gray-800 dark:text-white sm:py-0 flex items-center">
+				Build with
+				<svg
+					class="mx-1"
+					width="18px"
+					height="18px"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					version="1.1"
+					id="Layer_1"
+					x="0px"
+					y="0px"
+					viewBox="0 0 864 864"
+					fill="#DC1419"
+					style="enable-background: new 0 0 864 864"
+					xml:space="preserve"
+				>
+					<path
+						class="st0"
+						d="M766.1,257.5c-8.2-8.5-24.7-1.8-37.8-3c-0.3,0-0.9,0-1.2,0c-7.9,0.9-11.6-1.8-11.3-10.4  c0.6-10.7-0.3-21.6,0.3-32.3c0.3-7.3-2.4-9.5-9.5-9.1c-11.3,0.3-22.6-0.3-33.8,0.3c-6.4,0.3-8.8-2.1-8.5-8.5  c0.3-11.3,0-22.6,0.3-33.8c0.3-6.7-2.1-9.5-9.1-9.5c-46,0.3-92.1,0.3-137.8,0c-7.6,0-9.1,3-8.8,9.8c0.3,11.3,0,22.6,0.3,33.8  c0.3,6.4-1.8,8.8-8.5,8.5c-9.8-0.3-19.8,0.3-29.9-0.3s-14.9,1.8-14,13.1c0.9,9.8,0,19.8,0.3,29.9c0.3,6.7-1.8,9.8-9.1,9.5  c-10.7-0.6-21.6-0.6-32.3,0c-7.6,0.3-10.7-2.1-10.1-9.8c0.6-10.7,0-21.6,0.3-32.3c0.3-7.6-2.4-10.4-10.1-10.1  c-11.3,0.6-22.6-0.3-33.8,0c-6.4,0.3-8.8-2.1-8.8-8.5c0.3-11.6,0-23.5,0.3-35.1c0-5.5-1.8-8.2-7.6-7.9c-46.3,0-93,0.3-139.3,0  c-6.4,0-8.8,2.1-8.5,8.5c0.3,10.7-0.3,21.6,0.3,32.3c0.3,7.9-1.8,11.6-10.4,11c-9.5-0.6-18.9,0.6-28.4-0.3  c-9.8-0.9-14,1.5-13.1,12.2c0.9,9.5-0.3,18.9,0.3,28.4c0.6,8.5-1.5,12.5-11,11.9c-9.5-0.9-18.9,0.3-28.4-0.3  c-9.8-0.6-13.4,2.4-13.1,12.8c0.6,30.2,0.3,60.4,0.3,90.6l0,0c0,24.4,0,48.8,0,72.9c0,31.1,0,31.1,31.7,31.1  c20.4,0,20.4,0,20.1,20.7c0,31.1,0,31.1,30.2,31.1c3.7,0,7.3,0.3,10.7,0c8.5-0.9,10.7,2.7,10.7,11c0,13.4-6.1,32,2.7,38.4  c9.1,6.7,26.8,2.7,40.9,1.8c6.7-0.6,7.9,1.5,7.9,6.7c0,9.1,0,18,0,27.1c0,18.9,0,18.9,18.3,18.9c33.8,0,33.8,0,33.5,34.2  c-0.3,18-3,18,16.8,18c34.8,0,35.4,0.3,34.8,35.1c-0.3,13.4,3,18.3,17.1,17.1c11.6-1.2,27.1-5.2,33.8,2.1c5.8,6.1,2.7,21.6,1.5,32.6  c-1.5,13.7,2.7,18.6,16.8,16.8c11-1.5,25.9,3.4,32.6-2.1c7.9-6.7,3-22,2.4-33.5c-0.6-12.8,2.7-17.7,16.5-16.5  c11,1.2,25.6,4,32.6-1.5c8.5-6.7,3.4-22,2.7-33.2c-0.6-13.4,3.4-18,17.1-17.1c11,0.9,25.3,5.2,32.6-1.8c7.3-7,2.1-21.3,2.4-32.3  c0.6-17.7,0.3-17.7,18.6-17.4c5.5,0,11-0.6,16.2,0.3c13.1,1.8,18-2.4,17.4-16.8c-1.5-35.4-0.6-36,35.4-35.1  c13.1,0.3,18.3-2.4,16.8-16.8c-1.2-11-5.2-25.3,1.8-32.6c7-7.6,21.3-1.5,32.3-2.4c1.2,0,2.7-0.3,4,0c11.3,2.1,13.4-3.4,13.1-13.4  c-0.3-12.2-5.2-27.4,1.8-35.4c7.9-8.5,23.8-2.7,36-2.7c11,0,14.6-2.7,14.3-14c-0.6-51.5,0-102.8-0.3-154.3  C768.2,281.6,773.4,265.4,766.1,257.5z M301.1,297.4c0.3,7-2.7,9.5-9.5,9.1c-9.8-0.3-19.8,0.3-29.9-0.3c-9.8-0.6-13.7,2.4-13.1,12.8  c0.9,11.3,0.3,22.6,0.3,33.8c0,10.7,0,21.6,0,32.3l0,0c0,22.6-0.3,45.1,0,67.7c0,7-1.8,9.8-9.1,9.1c-11.3-0.6-22.6-0.6-33.8,0  c-7.6,0.3-8.8-2.7-8.8-9.5c0.3-45.4,0.3-91.2,0-136.6c0-7.9,2.4-10.7,10.1-10.1c8.5,0.6,17.1,0,25.6,1.5c11.6,2.1,15.9-3,16.2-13.1  c0.3-10.4,0.3-20.7,0-31.1c-0.3-6.7,2.1-9.1,8.5-8.5c0.9,0,1.8,0,2.7,0C312.7,256.3,299.2,243.8,301.1,297.4z"
+					/>
+				</svg>
+				with
+				<svg
+					class="mx-1"
+					width="28px"
+					height="28px"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					version="1.1"
+					id="Layer_1"
+					x="0px"
+					y="0px"
+					viewBox="0 0 205.4 76.7"
+					style="enable-background: new 0 0 205.4 76.7"
+					xml:space="preserve"
+					fill="#00ACD7"
+				>
+					<g>
+						<g>
+							<g>
+								<g>
+									<path
+										class="st0"
+										d="M15.5,23.2c-0.4,0-0.5-0.2-0.3-0.5l2.1-2.7c0.2-0.3,0.7-0.5,1.1-0.5h35.7c0.4,0,0.5,0.3,0.3,0.6l-1.7,2.6      c-0.2,0.3-0.7,0.6-1,0.6L15.5,23.2z"
+									/>
+								</g>
+							</g>
+						</g>
+						<g>
+							<g>
+								<g>
+									<path
+										class="st0"
+										d="M0.4,32.4c-0.4,0-0.5-0.2-0.3-0.5l2.1-2.7c0.2-0.3,0.7-0.5,1.1-0.5h45.6c0.4,0,0.6,0.3,0.5,0.6l-0.8,2.4      c-0.1,0.4-0.5,0.6-0.9,0.6L0.4,32.4z"
+									/>
+								</g>
+							</g>
+						</g>
+						<g>
+							<g>
+								<g>
+									<path
+										class="st0"
+										d="M24.6,41.6c-0.4,0-0.5-0.3-0.3-0.6l1.4-2.5c0.2-0.3,0.6-0.6,1-0.6h20c0.4,0,0.6,0.3,0.6,0.7L47.1,41      c0,0.4-0.4,0.7-0.7,0.7L24.6,41.6z"
+									/>
+								</g>
+							</g>
+						</g>
+						<g>
+							<g id="CXHf1q_3_">
+								<g>
+									<g>
+										<path
+											class="st0"
+											d="M128.4,21.4c-6.3,1.6-10.6,2.8-16.8,4.4c-1.5,0.4-1.6,0.5-2.9-1c-1.5-1.7-2.6-2.8-4.7-3.8       c-6.3-3.1-12.4-2.2-18.1,1.5c-6.8,4.4-10.3,10.9-10.2,19c0.1,8,5.6,14.6,13.5,15.7c6.8,0.9,12.5-1.5,17-6.6       c0.9-1.1,1.7-2.3,2.7-3.7c-3.6,0-8.1,0-19.3,0c-2.1,0-2.6-1.3-1.9-3c1.3-3.1,3.7-8.3,5.1-10.9c0.3-0.6,1-1.6,2.5-1.6       c5.1,0,23.9,0,36.4,0c-0.2,2.7-0.2,5.4-0.6,8.1c-1.1,7.2-3.8,13.8-8.2,19.6c-7.2,9.5-16.6,15.4-28.5,17       c-9.8,1.3-18.9-0.6-26.9-6.6c-7.4-5.6-11.6-13-12.7-22.2c-1.3-10.9,1.9-20.7,8.5-29.3c7.1-9.3,16.5-15.2,28-17.3       c9.4-1.7,18.4-0.6,26.5,4.9c5.3,3.5,9.1,8.3,11.6,14.1C130,20.6,129.6,21.1,128.4,21.4z"
+										/>
+									</g>
+									<g>
+										<path
+											class="st0"
+											d="M161.5,76.7c-9.1-0.2-17.4-2.8-24.4-8.8c-5.9-5.1-9.6-11.6-10.8-19.3c-1.8-11.3,1.3-21.3,8.1-30.2       c7.3-9.6,16.1-14.6,28-16.7c10.2-1.8,19.8-0.8,28.5,5.1c7.9,5.4,12.8,12.7,14.1,22.3c1.7,13.5-2.2,24.5-11.5,33.9       c-6.6,6.7-14.7,10.9-24,12.8C166.8,76.3,164.1,76.4,161.5,76.7z M185.3,36.3c-0.1-1.3-0.1-2.3-0.3-3.3       c-1.8-9.9-10.9-15.5-20.4-13.3c-9.3,2.1-15.3,8-17.5,17.4c-1.8,7.8,2,15.7,9.2,18.9c5.5,2.4,11,2.1,16.3-0.6       C180.5,51.3,184.8,44.9,185.3,36.3z"
+										/>
+									</g>
+								</g>
+							</g>
+						</g>
+					</g>
+				</svg>
+			</div>
+		</footer>
+	</body>
+	<script src="app.js"></script>
 </html>
