@@ -8,7 +8,7 @@ const search = () => {
         <span class="text-gray-700 dark:text-gray-200">Crawling the web for product...</span>
     </div>
 </div>`
-	document.querySelector('#searchResult').innerHTML('beforeend', loader)
+	document.querySelector('#search-status').innerHTML = loader
 	const searchParam = document.querySelector('input').value
 	const fetchData = async () => {
 		const response = await fetch(`/api/json?q=${searchParam}`)
@@ -17,11 +17,8 @@ const search = () => {
 	}
 	fetchData().then((data) => {
 		document
-			.querySelector('#searchResult')
-			.innerHTML(
-				'afterbegin',
-				`<span class="text-gray-700 dark:text-gray-200 mb-4">${data.length} total item found!</span>`
-			)
+			.querySelector('#search-status')
+			.innerHTML = `<span class="text-gray-700 dark:text-gray-200 mb-4">${data.length} total item found!</span>`
 		data.map((item) => {
 			const markup = `
 <div class="w-full bg-gray-50 rounded-lg shadow-md hover:shadow-lg hover:dark:shadow-2xl dark:bg-gray-800 dark:border-gray-700 flex flex-col content-between">
@@ -40,8 +37,8 @@ const search = () => {
     </div>
 </div>`
 			document
-				.querySelector('#searchResultGrid')
-				.innerHTML('beforeend', markup)
+				.querySelector('#search-result')
+				.innerHTML = markup
 		})
 		document.querySelector('#loader').remove()
 	})
