@@ -8,7 +8,7 @@ const search = () => {
         <span class="text-gray-700 dark:text-gray-200">Crawling the web for product...</span>
     </div>
 </div>`
-	document.querySelector('#searchResult').insertAdjacentHTML('beforeend', loader)
+	document.querySelector('#searchResult').innerHTML('beforeend', loader)
 	const searchParam = document.querySelector('input').value
 	const fetchData = async () => {
 		const response = await fetch(`/api/json?q=${searchParam}`)
@@ -18,7 +18,7 @@ const search = () => {
 	fetchData().then((data) => {
 		document
 			.querySelector('#searchResult')
-			.insertAdjacentHTML(
+			.innerHTML(
 				'afterbegin',
 				`<span class="text-gray-700 dark:text-gray-200 mb-4">${data.length} total item found!</span>`
 			)
@@ -41,7 +41,7 @@ const search = () => {
 </div>`
 			document
 				.querySelector('#searchResultGrid')
-				.insertAdjacentHTML('beforeend', markup)
+				.innerHTML('beforeend', markup)
 		})
 		document.querySelector('#loader').remove()
 	})
