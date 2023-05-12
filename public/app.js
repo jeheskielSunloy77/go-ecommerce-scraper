@@ -19,8 +19,8 @@ const search = () => {
 		document
 			.querySelector('#search-status')
 			.innerHTML = `<span class="text-gray-700 dark:text-gray-200 mb-4">${data.length} total item found!</span>`
-		data.map((item) => {
-			const markup = `
+		const markup = data.map((item) => {
+			return `
 <div class="w-full bg-gray-50 rounded-lg shadow-md hover:shadow-lg hover:dark:shadow-2xl dark:bg-gray-800 dark:border-gray-700 flex flex-col content-between">
     <a href=${item.productUrl} >
         <img class="p-8 rounded-t-lg object-contain mx-auto" src=${item.imageUrl} alt="product image" />
@@ -36,10 +36,11 @@ const search = () => {
         </div>
     </div>
 </div>`
-			document
-				.querySelector('#search-result')
-				.innerHTML = markup
+
 		})
+		document
+			.querySelector('#search-result')
+			.innerHTML = markup.join('')
 		document.querySelector('#loader').remove()
 	})
 }
